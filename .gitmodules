@@ -1,0 +1,7 @@
+[submodule "QuickLook.Common"]
+	path = QuickLook.Common
+	url = https://github.com/QL-Win/QuickLook.Common
+[submodule "SumatraPDF"]
+	path = SumatraPDF
+	url = https://github.com/sumatrapdfreader/sumatrapdf
+

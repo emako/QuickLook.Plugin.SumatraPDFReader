@@ -1,0 +1,5 @@
+﻿# All available settings in https://www.sumatrapdfreader.org/settings/settings3-3
+
+# SumatraPDFControl works only with update version of SumatraPDF.exe with enhanced plugin mode modifications from https://github.com/marcoscmonteiro/sumatrapdf
+# So, setting bellow signal to don't check for updates because we do not want SumatraPDF.exe updated with official version from https://www.sumatrapdfreader.org/
+CheckForUpdates = false
