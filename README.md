@@ -10,7 +10,7 @@ Alternative PDF Viewer: [QuickLook.Plugin.PdfViewer-Native](https://github.com/Q
 
 ## Supported extensions
 
-The following file extensions are treated as PlantUML files.
+The following file extensions are treated as SumatraPDF Reader supporting files.
 
 - epub
 - mobi
