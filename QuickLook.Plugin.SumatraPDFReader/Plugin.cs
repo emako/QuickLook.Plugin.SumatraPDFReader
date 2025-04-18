@@ -26,7 +26,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace QuickLook.Plugin.SumatraPDFReader;
 
@@ -67,15 +66,11 @@ public class Plugin : IViewer
             context.ViewerContent = viewer;
             viewer.Loaded += (_, _) =>
             {
-                // Fix for TextColor issue #2 in Light Theme
+                // Fix for TextColor issue #2 #3
                 // However, it's uncertain whether this fully resolves all related problems
-                if (!OSThemeHelper.AppsUseDarkTheme())
+                if (Window.GetWindow(viewer) is Window win)
                 {
-                    if (Window.GetWindow(viewer) is Window win)
-                    {
-                        win.Background = (Brush)win.FindResource("MainWindowBackgroundNoTransparent");
-                        win.DisableDwmBlur();
-                    }
+                    win.DisableDwmBlur();
                 }
             };
         }
@@ -109,14 +104,19 @@ file static class WindowExtension
 {
     public static void DisableDwmBlur(this Window window)
     {
+        window.Background = (Brush)window.FindResource("MainWindowBackgroundNoTransparent");
+
         if (Environment.OSVersion.Version >= new Version(10, 0, 21996))
         {
             if (Environment.OSVersion.Version >= new Version(10, 0, 22523))
             {
                 var hwnd = new WindowInteropHelper(window).Handle;
 
-                int isDarkThemeInt = 1;
-                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+                if (!OSThemeHelper.AppsUseDarkTheme())
+                {
+                    int isDarkThemeInt = 1;
+                    Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+                }
 
                 int backdropType = (int)Dwmapi.SystembackdropType.Auto;
                 Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.SystembackdropType, ref backdropType, Marshal.SizeOf<int>());
@@ -125,8 +125,11 @@ file static class WindowExtension
             {
                 var hwnd = new WindowInteropHelper(window).Handle;
 
-                int isDarkThemeInt = 1;
-                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+                if (!OSThemeHelper.AppsUseDarkTheme())
+                {
+                    int isDarkThemeInt = 1;
+                    Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+                }
 
                 int backdropType = 0;
                 Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.MicaEffect, ref backdropType, Marshal.SizeOf<int>());
