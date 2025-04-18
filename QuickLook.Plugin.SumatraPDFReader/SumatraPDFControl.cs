@@ -445,6 +445,8 @@ public partial class SumatraPDFControl : Control
                 " \"" + sFile + "\""
         };
         SumatraProcess = Process.Start(PSInfo);
+
+        ChildProcessTracer.Default.AddChildProcess(SumatraProcess.Handle);
     }
 
     public string ResolveSumatraPDFPath()
