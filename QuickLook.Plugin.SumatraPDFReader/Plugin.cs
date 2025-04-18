@@ -15,12 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using QuickLook.Common.Helpers;
+using QuickLook.Common.NativeMethods;
 using QuickLook.Common.Plugin;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 namespace QuickLook.Plugin.SumatraPDFReader;
 
@@ -59,6 +65,19 @@ public class Plugin : IViewer
             var viewer = new SumatraPanel();
             viewer.PreviewFile(path, context);
             context.ViewerContent = viewer;
+            viewer.Loaded += (_, _) =>
+            {
+                // Fix for TextColor issue #2 in Light Theme
+                // However, it's uncertain whether this fully resolves all related problems
+                if (!OSThemeHelper.AppsUseDarkTheme())
+                {
+                    if (Window.GetWindow(viewer) is Window win)
+                    {
+                        win.Background = (Brush)win.FindResource("MainWindowBackgroundNoTransparent");
+                        win.DisableDwmBlur();
+                    }
+                }
+            };
         }
         catch (Exception e)
         {
@@ -83,5 +102,43 @@ public class Plugin : IViewer
 
     public void Cleanup()
     {
+    }
+}
+
+file static class WindowExtension
+{
+    public static void DisableDwmBlur(this Window window)
+    {
+        if (Environment.OSVersion.Version >= new Version(10, 0, 21996))
+        {
+            if (Environment.OSVersion.Version >= new Version(10, 0, 22523))
+            {
+                var hwnd = new WindowInteropHelper(window).Handle;
+
+                int isDarkThemeInt = 1;
+                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+
+                int backdropType = (int)Dwmapi.SystembackdropType.Auto;
+                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.SystembackdropType, ref backdropType, Marshal.SizeOf<int>());
+            }
+            else
+            {
+                var hwnd = new WindowInteropHelper(window).Handle;
+
+                int isDarkThemeInt = 1;
+                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.UseImmersiveDarkMode, ref isDarkThemeInt, Marshal.SizeOf(typeof(bool)));
+
+                int backdropType = 0;
+                Dwmapi.DwmSetWindowAttribute(hwnd, (uint)Dwmapi.WindowAttribute.MicaEffect, ref backdropType, Marshal.SizeOf<int>());
+            }
+        }
+        else if (Environment.OSVersion.Version >= new Version(10, 0))
+        {
+            // Potential issues on Windows 10 are not maintained
+        }
+        else
+        {
+            // Other Windows Version
+        }
     }
 }

@@ -439,6 +439,7 @@ public partial class SumatraPDFControl : Control
             Arguments =
                 "-plugin " + base.Handle.ToString() +
                 //" -invert-colors" +
+                //"-set-color-range #333333 #ffffff" +
                 //" -appdata \"c:\\users\\marco\\Downloads\"" +
                 " -page " + page.ToString() +
                 " \"" + sFile + "\""
