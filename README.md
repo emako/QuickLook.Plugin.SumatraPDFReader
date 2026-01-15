@@ -20,6 +20,27 @@ The following file extensions are treated as SumatraPDF Reader supporting files.
 - chm
 - xps
 - djvu
+- pdf (optional, disabled by default)
+
+## Configuration
+
+### Enable PDF Support
+
+By default, this plugin does not handle PDF files to avoid conflicts with the default QuickLook PDF viewer. If you prefer to use SumatraPDF for viewing PDF files, you can enable PDF support by adding the following setting to your QuickLook configuration file:
+
+**Configuration file location:**
+- Standard installation: `%APPDATA%\pooi.moe\QuickLook\QuickLook.Plugin.SumatraPDFReader.config`
+- Portable installation: `<QuickLook Installation>\UserData\QuickLook.Plugin.SumatraPDFReader.config`
+
+**Add this line to the configuration file:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <Plugin.SumatraPDFReader.EnablePdfSupport>true</Plugin.SumatraPDFReader.EnablePdfSupport>
+</Settings>
+```
+
+After enabling this setting, restart QuickLook for the changes to take effect.
 
 ## Thanks
 

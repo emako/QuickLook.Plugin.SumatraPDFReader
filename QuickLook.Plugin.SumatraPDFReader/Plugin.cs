@@ -42,7 +42,7 @@ public class Plugin : IViewer
         if (Directory.Exists(path))
             return false;
 
-        return path.EndsWith(".epub", StringComparison.OrdinalIgnoreCase) ||
+        var supportedFormats = path.EndsWith(".epub", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".mobi", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".cbz", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".cbr", StringComparison.OrdinalIgnoreCase) ||
@@ -50,6 +50,16 @@ public class Plugin : IViewer
                path.EndsWith(".chm", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".xps", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".djvu", StringComparison.OrdinalIgnoreCase);
+
+        if (supportedFormats)
+            return true;
+
+        // Check if PDF support is enabled via settings
+        var enablePdfSupport = SettingHelper.Get("Plugin.SumatraPDFReader.EnablePdfSupport", false, "QuickLook.Plugin.SumatraPDFReader");
+        if (enablePdfSupport && path.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
     }
 
     public void Prepare(string path, ContextObject context)
