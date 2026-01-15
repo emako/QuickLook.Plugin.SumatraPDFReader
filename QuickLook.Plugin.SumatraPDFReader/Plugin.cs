@@ -31,10 +31,13 @@ namespace QuickLook.Plugin.SumatraPDFReader;
 
 public class Plugin : IViewer
 {
+    private bool _enablePdfSupport;
+
     public int Priority => 0;
 
     public void Init()
     {
+        _enablePdfSupport = SettingHelper.Get("Plugin.SumatraPDFReader.EnablePdfSupport", false, "QuickLook.Plugin.SumatraPDFReader");
     }
 
     public bool CanHandle(string path)
@@ -55,8 +58,7 @@ public class Plugin : IViewer
             return true;
 
         // Check if PDF support is enabled via settings
-        var enablePdfSupport = SettingHelper.Get("Plugin.SumatraPDFReader.EnablePdfSupport", false, "QuickLook.Plugin.SumatraPDFReader");
-        if (enablePdfSupport && path.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+        if (_enablePdfSupport && path.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;
