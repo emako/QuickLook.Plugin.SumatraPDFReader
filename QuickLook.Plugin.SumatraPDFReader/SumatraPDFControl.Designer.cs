@@ -37,6 +37,21 @@ partial class SumatraPDFControl
             CloseDocument();
             pSumatraWindowHandleList.Remove(pSumatraWindowHandle);
         }
+        try
+        {
+            if (SumatraProcess != null && !SumatraProcess.HasExited)
+            {
+                SumatraProcess.Kill();
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // Process may have already exited
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            // Access denied or process could not be terminated
+        }
         if (disposing && (components != null))
         {
             components.Dispose();

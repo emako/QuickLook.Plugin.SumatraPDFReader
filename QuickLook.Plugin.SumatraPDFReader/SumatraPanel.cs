@@ -28,18 +28,28 @@ namespace QuickLook.Plugin.SumatraPDFReader;
 
 public partial class SumatraPanel : UserControl
 {
+    private SumatraPDFControl _sumatraPDFControl;
+
     public SumatraPanel()
     {
         InitializeComponent();
         presenter.Background = System.Windows.Media.Brushes.White;
+        Unloaded += SumatraPanel_Unloaded;
+    }
+
+    private void SumatraPanel_Unloaded(object sender, RoutedEventArgs e)
+    {
+        _sumatraPDFControl?.Dispose();
+        _sumatraPDFControl = null;
     }
 
     public void PreviewFile(string path, ContextObject context)
     {
-        var sumatraPDFControl = new SumatraPDFControl();
+        _sumatraPDFControl?.Dispose();
+        _sumatraPDFControl = new SumatraPDFControl();
 
         // Resolve settings file
-        string sumatraPDFPath = Path.GetDirectoryName(sumatraPDFControl.ResolveSumatraPDFPath());
+        string sumatraPDFPath = Path.GetDirectoryName(_sumatraPDFControl.ResolveSumatraPDFPath());
         string settingsPath = Path.Combine(sumatraPDFPath, "SumatraPDF-settings.txt");
 
         string theme = OSThemeHelper.AppsUseDarkTheme() ? "Darker" : "Light";
@@ -51,7 +61,7 @@ public partial class SumatraPanel : UserControl
         File.WriteAllText(settingsPath, s);
 
         // Load file from SumatraPDF.exe
-        sumatraPDFControl.LoadFile(path);
-        presenter.Child = sumatraPDFControl;
+        _sumatraPDFControl.LoadFile(path);
+        presenter.Child = _sumatraPDFControl;
     }
 }
