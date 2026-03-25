@@ -6,8 +6,8 @@ $xml = [xml](Get-Content (Join-Path $repoRoot "QuickLook.Plugin.Metadata.Base.co
 $xml.Metadata.Version = "$revision"
 $xml.Save((Join-Path $releaseDir "QuickLook.Plugin.Metadata.config"))
 
-Remove-Item (Join-Path $repoRoot "QuickLook.Plugin.SumatraPDFReader.qlplugin") -ErrorAction SilentlyContinue
-Remove-Item (Join-Path $repoRoot "QuickLook.Plugin.SumatraPDFReader.zip") -ErrorAction SilentlyContinue
+Remove-Item "QuickLook.Plugin.SumatraPDFReader.qlplugin" -ErrorAction SilentlyContinue
+Remove-Item "QuickLook.Plugin.SumatraPDFReader.zip" -ErrorAction SilentlyContinue
 
 if (-not (Test-Path $releaseDir)) {
 	throw "Release directory not found: $releaseDir"
@@ -20,5 +20,5 @@ if (-not $files) {
 	throw "No files found to package in: $releaseDir"
 }
 
-Compress-Archive -Path $files -DestinationPath (Join-Path $repoRoot "QuickLook.Plugin.SumatraPDFReader.zip")
-Move-Item (Join-Path $repoRoot "QuickLook.Plugin.SumatraPDFReader.zip") (Join-Path $repoRoot "QuickLook.Plugin.SumatraPDFReader.qlplugin")
+Compress-Archive -Path $files -DestinationPath "QuickLook.Plugin.SumatraPDFReader.zip"
+Move-Item "QuickLook.Plugin.SumatraPDFReader.zip" "QuickLook.Plugin.SumatraPDFReader.qlplugin"
