@@ -72,31 +72,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\QuickLook.Plugin.Metadata.config">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
+        <PackageReference Include="QuickLook.Common" Version="4.4.0-preview80" />
         <PackageReference Include="Costura.Fody" Version="6.0.0" Condition=" '$(Configuration)' == 'Release'">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>compile; runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\QuickLook.Common\QuickLook.Common.csproj">
-            <Project>{85FDD6BA-871D-46C8-BD64-F6BB0CB5EA95}</Project>
-            <Name>QuickLook.Common</Name>
-            <Private>False</Private>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Include="..\GitVersion.cs">
-            <Link>Properties\GitVersion.cs</Link>
-        </Compile>
     </ItemGroup>
 
 </Project>

@@ -328,4 +328,3 @@ ASALocalRun/
 .mfractor/
 /*.qlplugin
 /GitVersion.cs
-/QuickLook.Plugin.Metadata.config
