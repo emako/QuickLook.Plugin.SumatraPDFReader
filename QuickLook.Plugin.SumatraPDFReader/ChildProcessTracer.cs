@@ -19,7 +19,7 @@ internal sealed class ChildProcessTracer
         public static extern bool AssignProcessToJobObject([In] nint hJob, [In] nint hProcess);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern nint CreateJobObject([In, Optional] SECURITY_ATTRIBUTES? lpJobAttributes, [In, Optional] string? lpName);
+        public static extern nint CreateJobObject([In, Optional] SECURITY_ATTRIBUTES lpJobAttributes, [In, Optional] string lpName);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern bool SetInformationJobObject(nint hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, nint lpJobObjectInfo, uint cbJobObjectInfoLength);
