@@ -1,0 +1,49 @@
+From c116c11e036287fe282fd6fd4ac83f4b8c602356 Mon Sep 17 00:00:00 2001
+From: ema <mccoy39082@163.com>
+Date: Fri, 27 Mar 2026 01:29:24 +0800
+Subject: [PATCH] QuickLook.Plugin.SumatraPDFReader
+
+---
+ src/SumatraPDF.cpp | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/src/SumatraPDF.cpp b/src/SumatraPDF.cpp
+index f3a84b716..d792c4759 100644
+--- a/src/SumatraPDF.cpp
++++ b/src/SumatraPDF.cpp
+@@ -1574,7 +1574,15 @@ static MainWindow* CreateMainWindow() {
+     int dx = windowPos.dx;
+     int dy = windowPos.dy;
+     HINSTANCE h = GetModuleHandle(nullptr);
+-    HWND hwndFrame = CreateWindowExW(0, clsName, title, style, x, y, dx, dy, nullptr, nullptr, h, nullptr);
++    ///////////////////////////////////////////////////////
++    // QuickLook.Plugin.SumatraPDFReader
++    HWND hwndParent = nullptr;
++    if (gPluginMode) {
++        style = WS_CHILD | WS_CLIPCHILDREN;
++        hwndParent = gCli->hwndPluginParent;
++    }
++    HWND hwndFrame = CreateWindowExW(0, clsName, title, style, x, y, dx, dy, hwndParent, nullptr, h, nullptr);
++    ///////////////////////////////////////////////////////
+     if (!hwndFrame) {
+         return nullptr;
+     }
+@@ -1686,9 +1694,12 @@ MainWindow* CreateAndShowMainWindow(SessionData* data) {
+     }
+     UpdateWindow(win->hwndFrame);
+ 
+-    if (gWindows.Size() == 1 && (true || IsDebuggerPresent())) {
+-        HwndToForeground(win->hwndFrame);
+-    }
++    ///////////////////////////////////////////////////////
++    // QuickLook.Plugin.SumatraPDFReader
++    //if (gWindows.Size() == 1 && (true || IsDebuggerPresent())) {
++    //    HwndToForeground(win->hwndFrame);
++    //}
++    ///////////////////////////////////////////////////////
+ 
+     SetSidebarVisibility(win, false, gGlobalPrefs->showFavorites);
+     ToolbarUpdateStateForWindow(win, true);
+-- 
+2.45.2.windows.1
+

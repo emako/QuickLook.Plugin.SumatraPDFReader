@@ -329,3 +329,4 @@ ASALocalRun/
 /*.qlplugin
 /GitVersion.cs
 QuickLook.Plugin.Metadata.config
+Build/QuickLook.Plugin.SumatraPDFReader.qlplugin
