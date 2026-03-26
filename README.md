@@ -24,11 +24,12 @@ The following file extensions are treated as SumatraPDF Reader supporting files.
 
 ## Configuration
 
-### Enable PDF Support
+How to enable PDF Support?
 
 By default, this plugin does not handle PDF files to avoid conflicts with the default QuickLook PDF viewer. If you prefer to use SumatraPDF for viewing PDF files, you can enable PDF support by adding the following setting to your QuickLook configuration file:
 
 **Configuration file location:**
+
 - Standard installation: `%APPDATA%\pooi.moe\QuickLook\QuickLook.Plugin.SumatraPDFReader.config`
 - Portable installation: `<QuickLook Installation>\UserData\QuickLook.Plugin.SumatraPDFReader.config`
 
@@ -36,11 +37,25 @@ By default, this plugin does not handle PDF files to avoid conflicts with the de
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <Plugin.SumatraPDFReader.EnablePdfSupport>true</Plugin.SumatraPDFReader.EnablePdfSupport>
+  <EnablePdf>true</EnablePdf>
 </Settings>
 ```
 
 After enabling this setting, restart QuickLook for the changes to take effect.
+
+## Developer
+
+How to apply the modification of `SumatraPDF.exe`?
+
+```bash
+cd SumatraPDF && git apply ../QuickLook.Plugin.SumatraPDFReader.patch
+```
+
+How to install VS2022?
+
+```bash
+winget install --id "Microsoft.VisualStudio.2022.Community"  --version "17.10.0" --override "–installPath=""D:\Program Files (x86)\Visual Studio 2022"""
+```
 
 ## Thanks
 

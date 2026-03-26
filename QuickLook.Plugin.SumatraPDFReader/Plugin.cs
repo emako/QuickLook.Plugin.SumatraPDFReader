@@ -37,7 +37,7 @@ public class Plugin : IViewer
 
     public void Init()
     {
-        _enablePdfSupport = SettingHelper.Get("Plugin.SumatraPDFReader.EnablePdfSupport", false, "QuickLook.Plugin.SumatraPDFReader");
+        _enablePdfSupport = SettingHelper.Get("EnablePdf", false, "QuickLook.Plugin.SumatraPDFReader");
     }
 
     public bool CanHandle(string path)
