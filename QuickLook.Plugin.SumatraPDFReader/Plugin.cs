@@ -33,7 +33,7 @@ public class Plugin : IViewer
 {
     private bool _enablePdfSupport;
 
-    public int Priority => 0;
+    public int Priority => 1;
 
     public void Init()
     {
